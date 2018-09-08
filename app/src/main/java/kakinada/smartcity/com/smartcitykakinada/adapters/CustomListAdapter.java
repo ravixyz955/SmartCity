@@ -42,21 +42,20 @@ public class CustomListAdapter extends RecyclerView.Adapter {
         try {
             jsonObject = jsonArray.getJSONObject(position);
             holder1.txt.setText(jsonObject.getString("text"));
-             icon=jsonObject.getString("icon").toString();
-            if(icon.equalsIgnoreCase("http://url-to-icon")){
-            holder1.image.setImageResource(R.drawable.events);
+            icon = jsonObject.getString("icon").toString();
+            if (icon.equalsIgnoreCase("http://url-to-icon")) {
+                holder1.image.setImageResource(R.drawable.events);
 
+            } else {
+                try {
+                    java.net.URL url = new java.net.URL(icon);
+                    android.graphics.Bitmap bmp = android.graphics.BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                    holder1.image.setImageBitmap(bmp);
+
+                } catch (java.io.IOException e) {
+                    e.printStackTrace();
                 }
-                else{
-                    try {
-                        java.net.URL url = new java.net.URL(icon);
-                        android.graphics.Bitmap bmp = android.graphics.BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                        holder1.image.setImageBitmap(bmp);
-
-        } catch (java.io.IOException e) {
-            e.printStackTrace();
-        }
-}
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();

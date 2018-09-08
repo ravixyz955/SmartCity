@@ -19,7 +19,6 @@ public interface APIService {
     @GET("govtservicelist")
     Call<Object> govtserviceList();
 
-
     @GET("discoverlist")
     Call<Object> discoverList();
 

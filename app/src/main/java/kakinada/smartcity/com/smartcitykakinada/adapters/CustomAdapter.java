@@ -10,10 +10,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import kakinada.smartcity.com.smartcitykakinada.R;
 
@@ -59,15 +63,47 @@ public class CustomAdapter extends BaseAdapter {
         view = layoutInflater.inflate(R.layout.gridview_item, null);
         name = (TextView) view.findViewById(R.id.name);
         desc = (TextView) view.findViewById(R.id.desc);
-        //image = (LinearLayout) view.findViewById(R.id.image);
+//        image = (LinearLayout) view.findViewById(R.id.image);
+        img = (ImageView) view.findViewById(R.id.list_img);
 
-        try {
-            jsonObject = jsonArray.getJSONObject(i);
-            name.setText(jsonObject.getString("name"));
-            desc.setText(jsonObject.getString("desc"));
-          // image.setBackgroundResource(R.drawable.ic_launcher_background);
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if (listType.equalsIgnoreCase("dashboard")) {
+            Log.d("CUSTOMADAPTERIF", "getView: customadapter");
+
+            img.setVisibility(View.GONE);
+            try {
+                jsonObject = jsonArray.getJSONObject(i);
+                name.setText(jsonObject.getString("name"));
+                desc.setText(jsonObject.getString("desc"));
+//                image.setBackgroundResource(R.drawable.ic_launcher_background);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.d("LISTRESPONSE", "getView: customadapter");
+/*
+            try {
+                jsonObject = jsonArray.getJSONObject(i);
+                URL url = new URL(jsonObject.getString("icon"));
+                Glide.with(context)
+                        .load(url)
+                        .into(img);
+                name.setText(jsonObject.getString("text"));
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+*/
+            try {
+                jsonObject = jsonArray.getJSONObject(i);
+                img.setBackgroundResource(R.drawable.city_council);
+                name.setText(jsonObject.getString("text"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
         }
         return view;
     }

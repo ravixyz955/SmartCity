@@ -3,9 +3,8 @@ package kakinada.smartcity.com.smartcitykakinada;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,21 +12,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
 
 import org.json.JSONArray;
-import android.widget.AdapterView;
-import android.widget.Toast;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import kakinada.smartcity.com.smartcitykakinada.NetworkCalls.APIService;
 import kakinada.smartcity.com.smartcitykakinada.NetworkCalls.APIUtils;
 import kakinada.smartcity.com.smartcitykakinada.Utils.DialogsUtils;
-import com.google.gson.Gson;
-import org.json.JSONException;
-import org.json.JSONObject;
 import kakinada.smartcity.com.smartcitykakinada.adapters.CustomAdapter;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     CarouselView carouselView;
     private APIService apiService = null;
-    private GridView gridView = null;
+    public static GridView gridView = null;
     private JSONArray jsonElements = null;
     ProgressDialog myDialog;
     int[] sampleImages = {R.drawable.smart, R.drawable.k1, R.drawable.kakin, R.drawable.kakinada, R.drawable.profile};
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity
         carouselView.setImageListener(imageListener);
         apiService = APIUtils.getAPIService();
         gridView = (GridView) findViewById(R.id.simpleGridView);
-        myDialog= DialogsUtils.showProgressDialog(this,"Loding");
+        myDialog = DialogsUtils.showProgressDialog(this, "Loading");
         myDialog.show();
 
         apiService.dashboard().enqueue(new retrofit2.Callback<Object>() {
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity
                     String json_string = new Gson().toJson(response.body());
                     try {
                         jsonElements = new JSONArray(json_string);
-                        CustomAdapter customAdapter = new CustomAdapter(getApplicationContext(), jsonElements, "");
+                        CustomAdapter customAdapter = new CustomAdapter(getApplicationContext(), jsonElements, "dashboard");
                         gridView.setAdapter(customAdapter);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -115,12 +116,14 @@ public class MainActivity extends AppCompatActivity
 
 
     }
+
     ImageListener imageListener = new ImageListener() {
         @Override
         public void setImageForPosition(int position, ImageView imageView) {
             imageView.setImageResource(sampleImages[position]);
         }
     };
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -179,7 +182,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-        public static void performAction(MainActivity context, String action, String key) {
+    public static void performAction(MainActivity context, String action, String key) {
         android.content.Intent i = new android.content.Intent(context, SwitchToActionActivity.class);
         i.putExtra("action", action);
         i.putExtra("key", key);
