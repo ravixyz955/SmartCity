@@ -14,8 +14,10 @@
 
         <ImageView
             android:id="@+id/list_img"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/common_google_signin_btn_text_dark"
             android:scaleType="fitXY" />
 
         <TextView
@@ -35,6 +37,17 @@
             android:gravity="center"
             android:textColor="#FFF"
             android:textSize="10dp"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/detail_Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/desc"
+            android:gravity="center"
+            android:textColor="#FFF"
+            android:textSize="12dp"
+            android:visibility="gone"
+            android:layout_marginTop="12dp"
             android:textStyle="bold" />
     </RelativeLayout>
 

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/button"
+        android:layout_toStartOf="@+id/button"
+        android:hint="type name"
+        android:text="restaurant mcdonalds"
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/white"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:text="Search"
+        android:visibility="gone" />
+
+
+    <include
+        layout="@layout/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button"></include>
+
+</RelativeLayout>

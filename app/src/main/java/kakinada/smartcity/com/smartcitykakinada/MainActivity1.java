@@ -47,7 +47,7 @@ public class MainActivity1 extends AppCompatActivity {
                     String json_string = new Gson().toJson(response.body());
                     try {
                         jsonElements = new JSONArray(json_string);
-                        CustomAdapter customAdapter = new CustomAdapter(getApplicationContext(), jsonElements, "");
+                        CustomAdapter customAdapter = new CustomAdapter(getApplicationContext(), jsonElements, "", getApplicationContext());
                         gridView.setAdapter(customAdapter);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -71,7 +71,7 @@ public class MainActivity1 extends AppCompatActivity {
                     action = jsonObject.getString("action");
                     key = jsonObject.getString("key");
                     performAction(MainActivity1.this, action, key);
-//                    Toast.makeText(MainActivity.this, "" + jsonObject.getString("action") + "    " + jsonObject.getString("key"), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(DelatilsActivity.this, "" + jsonObject.getString("action") + "    " + jsonObject.getString("key"), Toast.LENGTH_SHORT).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

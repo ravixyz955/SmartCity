@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity
                     String json_string = new Gson().toJson(response.body());
                     try {
                         jsonElements = new JSONArray(json_string);
-                        CustomAdapter customAdapter = new CustomAdapter(getApplicationContext(), jsonElements, "dashboard");
+                        CustomAdapter customAdapter = new CustomAdapter(getApplicationContext(), jsonElements, "dashboard", getApplicationContext());
                         gridView.setAdapter(customAdapter);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity
                     action = jsonObject.getString("action");
                     key = jsonObject.getString("key");
                     performAction(MainActivity.this, action, key);
-//                    Toast.makeText(MainActivity.this, "" + jsonObject.getString("action") + "    " + jsonObject.getString("key"), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(DelatilsActivity.this, "" + jsonObject.getString("action") + "    " + jsonObject.getString("key"), Toast.LENGTH_SHORT).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -180,7 +180,6 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
     public static void performAction(MainActivity context, String action, String key) {
         android.content.Intent i = new android.content.Intent(context, SwitchToActionActivity.class);
