@@ -286,7 +286,7 @@ public class DelatilsActivity extends AppCompatActivity {
                     recyclerView.setAdapter(null);
                     RecyclerViewAdapter adapterStores = new RecyclerViewAdapter(results, storeModels, getApplicationContext());
                     recyclerView.setAdapter(adapterStores);
-                    recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
+                    /*recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
                         @Override
                         public void onClick(View view, int position) {
                             StoreModel name = storeModels.get(position);
@@ -302,7 +302,7 @@ public class DelatilsActivity extends AppCompatActivity {
                         public void onLongClick(View view, int position) {
 
                         }
-                    }));
+                    }));*/
 
                 }
 

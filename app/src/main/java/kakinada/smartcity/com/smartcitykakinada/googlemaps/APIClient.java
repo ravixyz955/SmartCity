@@ -14,7 +14,7 @@ public class APIClient {
 
     private static Retrofit retrofit = null;
 
-    public static final String GOOGLE_PLACE_API_KEY = "AIzaSyBl4_o6PTYGgl913C1OMzkfJiV5Pdv4xow";
+    public static final String GOOGLE_PLACE_API_KEY = "AIzaSyCgkUTYh6GjDNpQglPh4aDT2oVJHbLQsRU";
 
     public static String base_url = "https://maps.googleapis.com/maps/api/";
 

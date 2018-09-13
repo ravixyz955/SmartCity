@@ -3,11 +3,9 @@ package kakinada.smartcity.com.smartcitykakinada;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -19,7 +17,7 @@ import org.json.JSONObject;
 import kakinada.smartcity.com.smartcitykakinada.NetworkCalls.APIService;
 import kakinada.smartcity.com.smartcitykakinada.NetworkCalls.APIUtils;
 import kakinada.smartcity.com.smartcitykakinada.adapters.CustomAdapter;
-import kakinada.smartcity.com.smartcitykakinada.googlemaps.DelatilsActivity;
+import kakinada.smartcity.com.smartcitykakinada.googlemaps.MapViewActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,13 +25,14 @@ import retrofit2.Response;
 public class SwitchToActionActivity extends AppCompatActivity {
 
     Intent i = null;
-    String action, key,send_query;
+    String action, key, send_query;
     private APIService apiService = null;
 //    private RecyclerView recyclerView = null;
 
     GridView grd_view;
     JSONObject jsonObject;
     JSONArray jsonArray;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,8 +70,8 @@ public class SwitchToActionActivity extends AppCompatActivity {
                                         try {
 
                                             JSONObject jsonObject = new JSONObject(String.valueOf(jsonArray.getJSONObject(position)));
-                                            send_query = jsonObject.getString("text");
-                                            Intent intent = new Intent(getApplicationContext(), DelatilsActivity.class);
+                                            send_query = jsonObject.getString("keyword");
+                                            Intent intent = new Intent(getApplicationContext(), MapViewActivity.class);
                                             intent.putExtra("query", send_query);
                                             startActivity(intent);
 
@@ -90,6 +89,7 @@ public class SwitchToActionActivity extends AppCompatActivity {
                         }
 
                     }
+
                     @Override
                     public void onFailure(Call<Object> call, Throwable t) {
                         Toast.makeText(SwitchToActionActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
@@ -144,6 +144,10 @@ public class SwitchToActionActivity extends AppCompatActivity {
                         Toast.makeText(SwitchToActionActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+                break;
+            case "go-payment":
+                startActivity(new Intent(this, PaymentsActivity.class));
+                finish();
                 break;
         }
     }

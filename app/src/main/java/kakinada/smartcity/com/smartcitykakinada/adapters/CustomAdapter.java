@@ -23,7 +23,7 @@ import kakinada.smartcity.com.smartcitykakinada.googlemaps.DelatilsActivity;
 public class CustomAdapter extends BaseAdapter {
     Context context;
     LayoutInflater layoutInflater;
-    TextView name, desc,detail_Text;
+    TextView name, desc, detail_Text;
     ImageView img;
     LinearLayout image;
     JSONArray jsonArray = null;
@@ -32,7 +32,7 @@ public class CustomAdapter extends BaseAdapter {
     Context ctx;
     int size;
     String send_query;
-    Integer[] mThumbIds = {R.drawable.policestation, R.drawable.hospital, R.drawable.medicalstore, R.drawable.bankbuilding, R.drawable.atm, R.drawable.hotel, R.drawable.library, R.drawable.garden, R.drawable.railwaystation, R.drawable.busstation, R.drawable.firestation, R.drawable.cafe, R.drawable.petrolpump, R.drawable.gym, R.drawable.postoffice, R.drawable.temple, R.drawable.mosque, R.drawable.church, R.drawable.shoppingmall, R.drawable.theater, R.drawable.jeweleryshop, R.drawable.supermarket, R.drawable.bakeryshop, R.drawable.bookstore, R.drawable.spa, R.drawable.school, R.drawable.animalcare};
+    Integer[] mThumbIds = {R.drawable.policestation, R.drawable.hospital, R.drawable.medicalstore, R.drawable.bankbuilding, R.drawable.atm, R.drawable.hotel, R.drawable.library, R.drawable.garden, R.drawable.railwaystation, R.drawable.busstation, R.drawable.firestation, R.drawable.cafe, R.drawable.petrolpump, R.drawable.gym, R.drawable.postoffice, R.drawable.temple, R.drawable.mosque, R.drawable.church, R.drawable.shoppingmall, R.drawable.theater, R.drawable.jeweleryshop, R.drawable.supermarket, R.drawable.bakeryshop, R.drawable.bookstore, R.drawable.spa, R.drawable.school, R.drawable.animalcare, R.drawable.toilet};
 
     public CustomAdapter(Context context, JSONArray jsonArray, String listType, Context applicationContext) {
         this.context = context;
