@@ -1,5 +1,6 @@
 package kakinada.smartcity.com.smartcitykakinada.googlemaps;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -8,41 +9,47 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
+import com.mapbox.mapboxsdk.annotations.IconFactory;
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.mapbox.mapboxsdk.annotations.Icon;
+import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.google.maps.android.SphericalUtil;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
 
 import java.util.HashMap;
 import java.util.List;
 
 import kakinada.smartcity.com.smartcitykakinada.R;
 
-/**
- * Created by navneet on 23/7/16.
- */
 public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
 
     String googlePlacesData;
     GoogleMap mMap;
     String url, queryType;
+    private MapboxMap mapboxMap;
     double latitude, longitude;
-    MapViewActivity mapsActivity;
+    Context context;
+    //    MapViewActivity mapsActivity;
+    MapboxMapViewActivity mapsActivity;
 
-    public GetNearbyPlacesData(MapViewActivity mapsActivity) {
+    //    public GetNearbyPlacesData(MapViewActivity mapsActivity) {
+    public GetNearbyPlacesData(MapboxMapViewActivity mapsActivity) {
         this.latitude = mapsActivity.latitude;
         this.longitude = mapsActivity.longitude;
         this.mapsActivity = mapsActivity;
+        this.context = mapsActivity;
     }
 
     @Override
     protected String doInBackground(Object... params) {
         try {
             Log.d("GetNearbyPlacesData", "doInBackground entered");
-            mMap = (GoogleMap) params[0];
+//            mMap = (GoogleMap) params[0];
+            mapboxMap = (MapboxMap) params[0];
             url = (String) params[1];
             queryType = (String) params[2];
             DownloadUrl downloadUrl = new DownloadUrl();
@@ -75,21 +82,16 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
             String vicinity = googlePlace.get("vicinity");
             LatLng origin = new LatLng(latitude, longitude);
             LatLng latLng = new LatLng(lat, lng);
-            double distance = Math.round(SphericalUtil.computeDistanceBetween(origin, latLng) / 1000);
+//            double distance = Math.round(SphericalUtil.computeDistanceBetween(origin, latLng) / 1000);
+            double distance = Math.round(origin.distanceTo(latLng) / 1000);
 
-            /*// Getting URL to the Google Directions API, from here the route mapping is started
-            String url = getDirectionsUrl(origin, latLng);
-
-            DownloadTask downloadTask = new DownloadTask();
-
-            // Start downloading json data from Google Directions API
-            downloadTask.execute(url);
-*/
             markerOptions.position(latLng);
+//            markerOptions.title(placeName + ":" + vicinity);
             markerOptions.title(placeName + ":" + vicinity + ":" + distance + "km");
 //            markerOptions.icon(BitmapDescriptorFactory.fromResource((int) BitmapDescriptorFactory.HUE_ORANGE));
-            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(Bitmap.createScaledBitmap((((BitmapDrawable) (mapsActivity.getResources().getDrawable(R.drawable.markerpolicestation)))).getBitmap(), 60, 60, false)));
-            mMap.addMarker(markerOptions);
+//            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(Bitmap.createScaledBitmap((((BitmapDrawable) (mapsActivity.getResources().getDrawable(R.drawable.markerpolicestation)))).getBitmap(), 60, 60, false)));
+//            mMap.addMarker(markerOptions);
+            mapboxMap.addMarker(markerOptions);
             /*PolylineOptions polygonOptions = new PolylineOptions();
             polygonOptions
                     .add(new LatLng(latitude, longitude))
@@ -97,8 +99,11 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
                     .color(Color.BLUE);
             mMap.addPolyline(polygonOptions);*/
             //move map camera
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+//            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+//            mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+            mapboxMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            mapboxMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+
         }
     }
 }

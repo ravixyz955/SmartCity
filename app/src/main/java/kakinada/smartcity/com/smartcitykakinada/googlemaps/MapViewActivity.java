@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,6 +33,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.mapbox.mapboxsdk.annotations.Icon;
+import com.mapbox.mapboxsdk.annotations.IconFactory;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -96,13 +99,12 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
                     DataTransfer[2] = search_Str;
                     Log.d("onClick", url);
                     search_Et.setText("");
-                    GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData(MapViewActivity.this);
-                    getNearbyPlacesData.execute(DataTransfer);
+//                    GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData(MapViewActivity.this);
+//                    getNearbyPlacesData.execute(DataTransfer);
                 } else {
 
                     Toast.makeText(getApplicationContext(), "please enter text to search", Toast.LENGTH_LONG).show();
                 }
-
             }
         });
 
@@ -144,7 +146,6 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
                 }
                 break;
             }
-
         }
     }
 
@@ -244,11 +245,6 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
         longitude = location.getLongitude();
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(latLng);
-        markerOptions.title("Current Position");
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-        mCurrLocationMarker = mMap.addMarker(markerOptions);
-
         //move map camera
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
@@ -271,8 +267,8 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
         DataTransfer[1] = url;
         DataTransfer[2] = q_str;
         Log.d("onClick", url);
-        GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData(MapViewActivity.this);
-        getNearbyPlacesData.execute(DataTransfer);
+//        GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData(MapViewActivity.this);
+//        getNearbyPlacesData.execute(DataTransfer);
 //        Toast.makeText(MapViewActivity.this, "Nearby" + "  " + q_str, Toast.LENGTH_LONG).show();
     }
 

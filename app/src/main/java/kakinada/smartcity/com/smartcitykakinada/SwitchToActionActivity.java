@@ -18,6 +18,7 @@ import kakinada.smartcity.com.smartcitykakinada.NetworkCalls.APIService;
 import kakinada.smartcity.com.smartcitykakinada.NetworkCalls.APIUtils;
 import kakinada.smartcity.com.smartcitykakinada.adapters.CustomAdapter;
 import kakinada.smartcity.com.smartcitykakinada.googlemaps.MapViewActivity;
+import kakinada.smartcity.com.smartcitykakinada.googlemaps.MapboxMapViewActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -71,7 +72,8 @@ public class SwitchToActionActivity extends AppCompatActivity {
 
                                             JSONObject jsonObject = new JSONObject(String.valueOf(jsonArray.getJSONObject(position)));
                                             send_query = jsonObject.getString("keyword");
-                                            Intent intent = new Intent(getApplicationContext(), MapViewActivity.class);
+//                                            Intent intent = new Intent(getApplicationContext(), MapViewActivity.class);
+                                            Intent intent = new Intent(getApplicationContext(), MapboxMapViewActivity.class);
                                             intent.putExtra("query", send_query);
                                             startActivity(intent);
 
