@@ -141,13 +141,12 @@ public class MapboxMapViewActivity extends AppCompatActivity implements OnMapRea
         }
     }
 
-    //
     @Override
     public void onMapReady(MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
         enableLocation();
 
-        RasterSource rasterSource = new RasterSource("ward-source", "mapbox://mapbox.streets", 256);
+        RasterSource rasterSource = new RasterSource("ward-source", "mapbox://dev4.9pcz9q7b", 256);
         mapboxMap.addSource(rasterSource);
 
         RasterLayer rasterLayer = new RasterLayer("ward-layer", "ward-source");
