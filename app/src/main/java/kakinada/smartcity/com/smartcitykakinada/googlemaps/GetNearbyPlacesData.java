@@ -1,23 +1,15 @@
 package kakinada.smartcity.com.smartcitykakinada.googlemaps;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.ImageView;
 
-import com.mapbox.mapboxsdk.annotations.IconFactory;
-import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.mapbox.mapboxsdk.annotations.Icon;
-import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.annotations.IconFactory;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
-import com.google.maps.android.SphericalUtil;
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
+import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 
 import java.util.HashMap;
@@ -30,11 +22,14 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
     String googlePlacesData;
     GoogleMap mMap;
     String url, queryType;
+    int index;
     private MapboxMap mapboxMap;
     double latitude, longitude;
     Context context;
     //    MapViewActivity mapsActivity;
     MapboxMapViewActivity mapsActivity;
+
+    private int[] markers;
 
     //    public GetNearbyPlacesData(MapViewActivity mapsActivity) {
     public GetNearbyPlacesData(MapboxMapViewActivity mapsActivity) {
@@ -42,6 +37,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
         this.longitude = mapsActivity.longitude;
         this.mapsActivity = mapsActivity;
         this.context = mapsActivity;
+        markers = new int[]{R.drawable.markerpolicestation, R.drawable.markerhospital, R.drawable.markermedicalstore, R.drawable.markerbank, R.drawable.markeratm, R.drawable.markerhotel, R.drawable.markerlibrary, R.drawable.markergarden, R.drawable.markerrailwaystation, R.drawable.markerbusstation, R.drawable.markerfirestation, R.drawable.markercafe, R.drawable.markerpetrolbunk, R.drawable.markergym, R.drawable.markerpostoffice, R.drawable.markertemple, R.drawable.markermoque, R.drawable.markerchurch, R.drawable.markershooppingmall, R.drawable.markermovietheatre, R.drawable.markerjewelleryshop, R.drawable.markersupermarket, R.drawable.markerbakery, R.drawable.markerbookstore, R.drawable.markerspa, R.drawable.markerschool, R.drawable.markeranimalcare, R.drawable.markertoilet};
     }
 
     @Override
@@ -52,6 +48,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
             mapboxMap = (MapboxMap) params[0];
             url = (String) params[1];
             queryType = (String) params[2];
+            index = (int) params[3];
             DownloadUrl downloadUrl = new DownloadUrl();
             googlePlacesData = downloadUrl.readUrl(url);
             Log.d("GooglePlacesReadTask", "doInBackground Exit");
@@ -72,6 +69,9 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
     }
 
     private void ShowNearbyPlaces(List<HashMap<String, String>> nearbyPlacesList) {
+//        Icon mIcon = IconFactory.getInstance(mapsActivity).fromResource(R.drawable.markerpolicestation);
+        IconFactory iconFactory = IconFactory.getInstance(mapsActivity);
+
         for (int i = 0; i < nearbyPlacesList.size(); i++) {
             Log.d("onPostExecute", "Entered into showing locations");
             MarkerOptions markerOptions = new MarkerOptions();
@@ -82,10 +82,12 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
             String vicinity = googlePlace.get("vicinity");
             LatLng origin = new LatLng(latitude, longitude);
             LatLng latLng = new LatLng(lat, lng);
+            Icon mIcon = iconFactory.fromResource(markers[index]);
 //            double distance = Math.round(SphericalUtil.computeDistanceBetween(origin, latLng) / 1000);
             double distance = Math.round(origin.distanceTo(latLng) / 1000);
 
             markerOptions.position(latLng);
+            markerOptions.icon(mIcon);
 //            markerOptions.title(placeName + ":" + vicinity);
             markerOptions.title(placeName + ":" + vicinity + ":" + distance + "km");
 //            markerOptions.icon(BitmapDescriptorFactory.fromResource((int) BitmapDescriptorFactory.HUE_ORANGE));

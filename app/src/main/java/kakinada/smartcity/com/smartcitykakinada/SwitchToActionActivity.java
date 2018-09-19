@@ -3,6 +3,8 @@ package kakinada.smartcity.com.smartcitykakinada;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -27,6 +29,7 @@ public class SwitchToActionActivity extends AppCompatActivity {
 
     Intent i = null;
     String action, key, send_query;
+    int index;
     private APIService apiService = null;
 //    private RecyclerView recyclerView = null;
 
@@ -40,8 +43,9 @@ public class SwitchToActionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_switch_to_action);
         grd_view = (GridView) findViewById(R.id.simpleGridView);
         /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-*/
+        setSupportActionBar(toolbar);*/
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         apiService = APIUtils.getAPIService();
 //        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         i = getIntent();
@@ -72,9 +76,11 @@ public class SwitchToActionActivity extends AppCompatActivity {
 
                                             JSONObject jsonObject = new JSONObject(String.valueOf(jsonArray.getJSONObject(position)));
                                             send_query = jsonObject.getString("keyword");
+                                            index = position;
 //                                            Intent intent = new Intent(getApplicationContext(), MapViewActivity.class);
                                             Intent intent = new Intent(getApplicationContext(), MapboxMapViewActivity.class);
                                             intent.putExtra("query", send_query);
+                                            intent.putExtra("index", index);
                                             startActivity(intent);
 
 //                    Toast.makeText(DelatilsActivity.this, "" + jsonObject.getString("action") + "    " + jsonObject.getString("key"), Toast.LENGTH_SHORT).show();
@@ -152,5 +158,15 @@ public class SwitchToActionActivity extends AppCompatActivity {
                 finish();
                 break;
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

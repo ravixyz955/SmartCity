@@ -9,6 +9,7 @@ import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -61,18 +62,21 @@ public class MapboxMapViewActivity extends AppCompatActivity implements OnMapRea
     String search_Str;
     Button search_Btn;
     private final int REQ_CODE_SPEECH_INPUT = 100;
+    private String[] title = new String[]{"police station", "hospital", "medical store", "bank", "atm", "hotel", "library", "garden", "railway station", "bus station", "fire station", "cafe", "petrol pump", "gym", "post office", "temple", "mosque", "church", "shopping malls", "movie theatre", "jewellery shop", "super market", "bakery", "book store", "spa", "school", "animal care", "toilets"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Mapbox.getInstance(this, getString(R.string.mapbox_access_token));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mapbox_map_view);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         search_Btn = (Button) findViewById(R.id.go_Btn);
         search_Et = (EditText) findViewById(R.id.search_text);
         img_speech = (ImageView) findViewById(R.id.text_to_speech);
 
         mapView = (MapView) findViewById(R.id.map);
+        mapView.setStyleUrl("mapbox://styles/mapbox/satellite-streets-v9");
         mapView.onCreate(savedInstanceState);
 
         mapView.getMapAsync(this);
@@ -84,10 +88,18 @@ public class MapboxMapViewActivity extends AppCompatActivity implements OnMapRea
                     mapboxMap.clear();
                     search_Str = search_Et.getText().toString();
                     String url = getUrl(latitude, longitude, search_Str);
-                    Object[] DataTransfer = new Object[3];
+                    int index = getIntent().getIntExtra("index", 0);
+                    Object[] DataTransfer = new Object[4];
                     DataTransfer[0] = mapboxMap;
                     DataTransfer[1] = url;
                     DataTransfer[2] = search_Str;
+                    for (int i = 0; i < title.length; i++) {
+                        if (search_Str.trim().contains(title[i])) {
+                            index = i;
+                            break;
+                        }
+                    }
+                    DataTransfer[3] = index;
                     Log.d("onClick", url);
                     search_Et.setText("");
                     GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData(MapboxMapViewActivity.this);
@@ -118,6 +130,16 @@ public class MapboxMapViewActivity extends AppCompatActivity implements OnMapRea
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -236,17 +258,19 @@ public class MapboxMapViewActivity extends AppCompatActivity implements OnMapRea
 
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
-        markerOptions.title("Current Position");
+//        markerOptions.title("Current Position");
         markerOptions.icon(mIcon);
 //        markerOptions.icon(BitmapDescriptorFactory.fromResource((int) BitmapDescriptorFactory.HUE_ORANGE))
         mCurrLocationMarker = mapboxMap.addMarker(markerOptions);
 
         String q_str = getIntent().getStringExtra("query");
+        int index = getIntent().getIntExtra("index", 0);
         String url = getUrl(latitude, longitude, q_str.toLowerCase());
-        Object[] DataTransfer = new Object[3];
+        Object[] DataTransfer = new Object[4];
         DataTransfer[0] = mapboxMap;
         DataTransfer[1] = url;
         DataTransfer[2] = q_str;
+        DataTransfer[3] = index;
         Log.d("onClick", url);
         GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData(MapboxMapViewActivity.this);
         getNearbyPlacesData.execute(DataTransfer);

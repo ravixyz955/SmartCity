@@ -46,9 +46,11 @@
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
         android:layout_weight="1.8"
+        mapbox:mapbox_cameraTargetLat="17.4432902"
+        mapbox:mapbox_cameraTargetLng="78.4852776"
         mapbox:mapbox_cameraTilt="50.25"
         mapbox:mapbox_cameraZoom="13"
         mapbox:mapbox_cameraZoomMax="12.41"
         mapbox:mapbox_cameraZoomMin="6"
-        mapbox:mapbox_styleUrl="mapbox://styles/mapbox/streets-v10" />
+        mapbox:mapbox_styleUrl="mapbox://styles/mapbox/satellite-v9" />
 </LinearLayout>
