@@ -29,6 +29,7 @@ import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
+import com.mapbox.mapboxsdk.constants.Style;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
@@ -38,6 +39,7 @@ import com.mapbox.mapboxsdk.plugins.locationlayer.modes.CameraMode;
 import com.mapbox.mapboxsdk.plugins.locationlayer.modes.RenderMode;
 import com.mapbox.mapboxsdk.style.layers.RasterLayer;
 import com.mapbox.mapboxsdk.style.sources.RasterSource;
+import com.mapbox.mapboxsdk.style.sources.TileSet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,7 +78,8 @@ public class MapboxMapViewActivity extends AppCompatActivity implements OnMapRea
         img_speech = (ImageView) findViewById(R.id.text_to_speech);
 
         mapView = (MapView) findViewById(R.id.map);
-        mapView.setStyleUrl("mapbox://styles/mapbox/satellite-streets-v9");
+//        mapView.setStyleUrl("mapbox://styles/mapbox/satellite-streets-v9");
+        mapView.setStyleUrl(Style.SATELLITE_STREETS);
         mapView.onCreate(savedInstanceState);
 
         mapView.getMapAsync(this);
@@ -159,7 +162,6 @@ public class MapboxMapViewActivity extends AppCompatActivity implements OnMapRea
                 }
                 break;
             }
-
         }
     }
 
@@ -168,11 +170,38 @@ public class MapboxMapViewActivity extends AppCompatActivity implements OnMapRea
         this.mapboxMap = mapboxMap;
         enableLocation();
 
-        RasterSource rasterSource = new RasterSource("ward-source", "mapbox://dev4.9pcz9q7b", 256);
-        mapboxMap.addSource(rasterSource);
+        String[] mapbox_Id = new String[]{"dev4.9pcz9q7b",
+                "infoxyz.1muepkyd",
+                "infoxyz.2esl0l2m",
+                "infoxyz.drq0o8du",
+                "infoxyz.0p4kwx5s",
+                "infoxyz.3kbmrj3a",
+                "infoxyz.9xgrwsk5",
+                "infoxyz.d3y274cn",
+                "infoxyz.dpszx4fj",
+                "infoxyz.a0vaku1u",
+                "infoxyz.5rd2668f",
+                "infoxyz.8x89pdy2",
+                "infoxyz.d3gmr7t4",
+                "infoxyz.clb1tg5c",
+                "infoxyz.6isxixob",
+                "infoxyz.6gsldvka",
+                "infoxyz.4tux9jsp"};
+        String[] ward_no = new String[]{"27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43"};
+        String[] ward_Layers = new String[]{"k1", "k2", "k3", "k4", "k5", "k6", "k7", "k8", "k9", "k10", "k11", "k12", "k13", "k14", "k15", "k16", "k17"};
+        ;
+        String mapboxId_Str = null, wardNo_Str = null, wardLayers_Id = null;
+        for (int i = 0; i < mapbox_Id.length; i++) {
 
-        RasterLayer rasterLayer = new RasterLayer("ward-layer", "ward-source");
-        mapboxMap.addLayer(rasterLayer);
+            mapboxId_Str = mapbox_Id[i];
+            wardNo_Str = "wards" + ward_no[i];
+            wardLayers_Id = ward_Layers[i];
+            TileSet tileSet = new TileSet("2.2.0", "https://api.mapbox.com/v4/" + mapboxId_Str + "/{z}/{x}/{y}@2x.png?access_token=" + getString(R.string.mapbox_access_token));
+            RasterSource rasterSource1 = new RasterSource(wardNo_Str, tileSet, 256);
+            mapboxMap.addSource(rasterSource1);
+            RasterLayer rasterLayer1 = new RasterLayer(wardLayers_Id, wardNo_Str);
+            mapboxMap.addLayer(rasterLayer1);
+        }
     }
 
     private void enableLocation() {
@@ -181,7 +210,6 @@ public class MapboxMapViewActivity extends AppCompatActivity implements OnMapRea
             initializeLocationLayer();
         } else {
             permissionsManager = new PermissionsManager(this);
-//            permissionsManager = new PermissionsManager(this);
             permissionsManager.requestLocationPermissions(this);
         }
     }
